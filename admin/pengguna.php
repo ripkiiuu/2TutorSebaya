@@ -1,0 +1,72 @@
+<?php
+include '../config/koneksi.php';
+include '../config/auth.php'; 
+include '../templates/header.php';
+?>
+
+<div class="d-flex">
+    <?php include '../templates/sidebar-admin.php'; ?>
+    
+    <div class="p-5" style="margin-left: 260px; width: 100%;">
+        <h2 class="fw-bold mb-4">Kelola Pengguna</h2>
+
+        <div class="mb-4">
+            <input type="text" id="searchInput" class="form-control" placeholder="Cari nama atau email di sini..." onkeyup="searchTable()">
+        </div>
+
+        <h5 class="fw-bold mt-4">Daftar Mahasiswa</h5>
+        <table class="table bg-white shadow-sm mb-5">
+            <thead><tr><th>Nama</th><th>Email</th></tr></thead>
+            <tbody>
+                <?php
+                $mhs = mysqli_query($conn, "SELECT * FROM users WHERE role='mahasiswa'");
+                while($row = mysqli_fetch_assoc($mhs)) {
+                    echo "<tr><td>{$row['nama']}</td><td>{$row['email']}</td></tr>";
+                }
+                ?>
+            </tbody>
+        </table>
+
+        <h5 class="fw-bold mt-4">Daftar Mentor</h5>
+        <table class="table bg-white shadow-sm">
+            <thead><tr><th>Nama</th><th>Email</th></tr></thead>
+            <tbody>
+                <?php
+                $mnt = mysqli_query($conn, "SELECT * FROM users WHERE role='mentor'");
+                while($row = mysqli_fetch_assoc($mnt)) {
+                    echo "<tr><td>{$row['nama']}</td><td>{$row['email']}</td></tr>";
+                }
+                ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+function searchTable() {
+    let input = document.getElementById("searchInput");
+    let filter = input.value.toLowerCase();
+    let tables = document.querySelectorAll(".table");
+
+    tables.forEach(table => {
+        let tr = table.getElementsByTagName("tr");
+        for (let i = 1; i < tr.length; i++) {
+            let td = tr[i].getElementsByTagName("td");
+            let found = false;
+            for (let j = 0; j < td.length; j++) {
+                if (td[j].innerText.toLowerCase().indexOf(filter) > -1) {
+                    found = true;
+                }
+            }
+            // Menggunakan d-none milik Bootstrap untuk menyembunyikan/menampilkan
+            if (found) {
+                tr[i].classList.remove('d-none');
+            } else {
+                tr[i].classList.add('d-none');
+            }
+        }
+    });
+}
+</script>
+
+<?php include '../templates/footer.php'; ?>
