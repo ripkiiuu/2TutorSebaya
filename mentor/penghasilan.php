@@ -8,7 +8,6 @@ $data_mentor = mysqli_fetch_assoc(mysqli_query($conn, "SELECT id_mentor, tarif F
 $id_mentor = $data_mentor['id_mentor'];
 $tarif = $data_mentor['tarif'];
 
-// Mengambil sesi yang sudah selesai
 $query = mysqli_query($conn, "SELECT b.tanggal, b.jam, u.nama as nama_mahasiswa 
                             FROM booking b 
                             JOIN users u ON b.id_mahasiswa = u.id 

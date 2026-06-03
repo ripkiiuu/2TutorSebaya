@@ -21,7 +21,9 @@ include '../templates/header.php';
                 <?php
                 $mhs = mysqli_query($conn, "SELECT * FROM users WHERE role='mahasiswa'");
                 while($row = mysqli_fetch_assoc($mhs)) {
-                    echo "<tr><td>{$row['nama']}</td><td>{$row['email']}</td></tr>";
+                    $nama = htmlspecialchars($row['nama'], ENT_QUOTES, 'UTF-8');
+                    $email = htmlspecialchars($row['email'], ENT_QUOTES, 'UTF-8');
+                    echo "<tr><td>{$nama}</td><td>{$email}</td></tr>";
                 }
                 ?>
             </tbody>
@@ -34,7 +36,9 @@ include '../templates/header.php';
                 <?php
                 $mnt = mysqli_query($conn, "SELECT * FROM users WHERE role='mentor'");
                 while($row = mysqli_fetch_assoc($mnt)) {
-                    echo "<tr><td>{$row['nama']}</td><td>{$row['email']}</td></tr>";
+                    $nama = htmlspecialchars($row['nama'], ENT_QUOTES, 'UTF-8');
+                    $email = htmlspecialchars($row['email'], ENT_QUOTES, 'UTF-8');
+                    echo "<tr><td>{$nama}</td><td>{$email}</td></tr>";
                 }
                 ?>
             </tbody>

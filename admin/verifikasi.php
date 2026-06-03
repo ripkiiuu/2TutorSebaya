@@ -2,7 +2,6 @@
 include '../config/auth.php';
 include '../config/koneksi.php';
 
-// Logika Approve
 if(isset($_GET['approve'])) {
     $id = $_GET['approve'];
     mysqli_query($conn, "UPDATE mentor SET status_verifikasi='aktif' WHERE id_mentor='$id'");

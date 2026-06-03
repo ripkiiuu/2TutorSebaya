@@ -3,7 +3,6 @@ session_start();
 include 'config/koneksi.php';
 include 'templates/header.php';
 
-// Jika pengguna sudah login sebelumnya, langsung arahkan ke dashboard masing-masing
 if (isset($_SESSION['login'])) {
     if ($_SESSION['role'] == 'admin') {
         header('Location: admin/dashboard.php');
@@ -15,19 +14,15 @@ if (isset($_SESSION['login'])) {
     exit;
 }
 
-// Menangkap proses submit form login
 if (isset($_POST['login'])) {
     $email = mysqli_real_escape_string($conn, $_POST['email']);
     $password = $_POST['password'];
 
-    // Cari data user berdasarkan email
     $query = mysqli_query($conn, "SELECT * FROM users WHERE email='$email'");
-    
-    // Jika email ditemukan
+
     if (mysqli_num_rows($query) === 1) {
         $data = mysqli_fetch_assoc($query);
-        
-        // Cek apakah akun dinonaktifkan oleh admin
+
         if ($data['status_akun'] == 'inactive') {
             echo "<script>
                 document.addEventListener('DOMContentLoaded', function() {
@@ -35,15 +30,13 @@ if (isset($_POST['login'])) {
                 });
             </script>";
         } else {
-            // Verifikasi password (mencocokkan input dengan hash di database)
+
             if (password_verify($password, $data['password'])) {
-                // Set Session untuk menandakan user berhasil login
                 $_SESSION['login'] = true;
                 $_SESSION['id'] = $data['id'];
                 $_SESSION['nama'] = $data['nama'];
                 $_SESSION['role'] = $data['role'];
 
-                // Tampilkan notifikasi sukses lalu arahkan ke dashboard yang sesuai
                 $redirect_url = "";
                 if ($data['role'] == 'admin') $redirect_url = "admin/dashboard.php";
                 else if ($data['role'] == 'mentor') $redirect_url = "mentor/dashboard.php";
@@ -63,7 +56,6 @@ if (isset($_POST['login'])) {
                     });
                 </script>";
             } else {
-                // Jika password salah
                 echo "<script>
                     document.addEventListener('DOMContentLoaded', function() {
                         Swal.fire('Gagal Login!', 'Password yang Anda masukkan salah.', 'error');
@@ -72,7 +64,6 @@ if (isset($_POST['login'])) {
             }
         }
     } else {
-        // Jika email tidak terdaftar
         echo "<script>
             document.addEventListener('DOMContentLoaded', function() {
                 Swal.fire('Gagal Login!', 'Email tidak terdaftar.', 'error');
@@ -88,7 +79,7 @@ if (isset($_POST['login'])) {
             <div class="card shadow-sm border-0" style="border-radius: 15px;">
                 <div class="card-body p-5">
                     <div class="text-center mb-4">
-                        <h3 class="fw-bold" style="color: #0FA7A0;">Masuk ke Akun</h3>
+                        <h3 class="fw-bold" style="color: #1E3A8A;">Masuk ke Akun</h3>
                         <p class="text-muted">Masukkan kredensial untuk melanjutkan</p>
                     </div>
                     
@@ -101,7 +92,7 @@ if (isset($_POST['login'])) {
                             <label class="form-label fw-semibold">Password</label>
                             <input type="password" name="password" class="form-control" placeholder="Masukkan password" required>
                         </div>
-                        <button type="submit" name="login" class="btn w-100 text-white fw-bold py-2 mb-3" style="background-color: #0FA7A0; border-radius: 10px;">Masuk</button>
+                        <button type="submit" name="login" class="btn w-100 text-white fw-bold py-2 mb-3" style="background-color: #1E3A8A; border-radius: 10px;">Masuk</button>
                     </form>
                     
                     <p class="text-center mb-0">Belum punya akun? <a href="register.php" class="text-decoration-none" style="color: #F4A100; font-weight: bold;">Daftar Sekarang</a></p>

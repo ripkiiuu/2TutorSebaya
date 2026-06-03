@@ -9,9 +9,7 @@ if ($_SESSION['role'] != 'mahasiswa') {
 include '../config/koneksi.php';
 $id_mahasiswa = $_SESSION['id'];
 
-// Ambil data riwayat yang statusnya 'selesai' atau 'ditolak'
-// Diurutkan berdasarkan tanggal terbaru (DESC)
-$query_riwayat = mysqli_query($conn, "SELECT b.tanggal, b.jam, b.status, u.nama as nama_mentor, m.mata_kuliah, m.tarif 
+$query_riwayat = mysqli_query($conn, "SELECT b.id_booking, b.tanggal, b.jam, b.status, b.is_reviewed, b.total_harga, u.nama as nama_mentor, u.foto_profil, m.id_mentor, m.mata_kuliah 
                                     FROM booking b 
                                     JOIN mentor m ON b.id_mentor = m.id_mentor 
                                     JOIN users u ON m.id_user = u.id 
@@ -35,7 +33,6 @@ include '../templates/header.php';
             <?php 
             if(mysqli_num_rows($query_riwayat) > 0) {
                 while($row = mysqli_fetch_assoc($query_riwayat)) { 
-                    // Logika warna berdasarkan status
                     if ($row['status'] == 'selesai') {
                         $badge_color = 'bg-primary';
                         $badge_text = 'Sesi Selesai';
@@ -47,12 +44,16 @@ include '../templates/header.php';
                     }
             ?>
                     <div class="col-md-6">
-                        <div class="card border-0 shadow-sm p-4 h-100 <?php echo $card_border; ?>" style="border-radius: 20px; border-left: 5px solid !important;">
+                        <div class="card border-0 shadow-sm p-4 h-100 <?php echo $card_border; ?>" style="border-radius: 12px; border-left: 5px solid !important;">
                             <div class="d-flex justify-content-between align-items-start mb-3">
                                 <div class="d-flex align-items-center">
-                                    <div class="text-white rounded-circle d-flex justify-content-center align-items-center fw-bold shadow-sm" style="width: 50px; height: 50px; font-size: 20px; background-color: #cbd5e1;">
-                                        <?php echo strtoupper(substr($row['nama_mentor'], 0, 1)); ?>
-                                    </div>
+                                    <?php if (!empty($row['foto_profil'])) { ?>
+                                        <img src="../assets/uploads/profil/<?php echo $row['foto_profil']; ?>" class="rounded-circle object-fit-cover shadow-sm" style="width: 50px; height: 50px;">
+                                    <?php } else { ?>
+                                        <div class="text-white rounded-circle d-flex justify-content-center align-items-center fw-bold shadow-sm" style="width: 50px; height: 50px; font-size: 20px; background-color: #1E3A8A;">
+                                            <?php echo strtoupper(substr($row['nama_mentor'], 0, 1)); ?>
+                                        </div>
+                                    <?php } ?>
                                     <div class="ms-3">
                                         <h5 class="fw-bold mb-0 text-dark"><?php echo $row['nama_mentor']; ?></h5>
                                         <span class="text-muted" style="font-size: 13px;"><i class="bi bi-book"></i> <?php echo $row['mata_kuliah']; ?></span>
@@ -69,17 +70,27 @@ include '../templates/header.php';
                                     <span class="text-muted" style="font-size: 14px;"><?php echo $row['jam']; ?></span>
                                 </div>
                                 <div>
-                                    <span class="fw-bold text-dark" style="font-size: 16px;">Rp <?php echo number_format($row['tarif'], 0, ',', '.'); ?></span>
+                                    <span class="fw-bold text-dark" style="font-size: 16px;">Rp <?php echo number_format($row['total_harga'], 0, ',', '.'); ?></span>
                                 </div>
                             </div>
+                            
+                            <?php if ($row['status'] == 'selesai') { ?>
+                                <div class="mt-3 pt-3 border-top text-end">
+                                    <?php if ($row['is_reviewed'] == 0) { ?>
+                                        <a href="beri_ulasan.php?id_booking=<?php echo $row['id_booking']; ?>&id_mentor=<?php echo $row['id_mentor']; ?>" class="btn btn-sm text-white fw-bold px-3" style="background-color: #1E3A8A; border-radius: 8px;"><i class="bi bi-star-fill"></i> Beri Ulasan</a>
+                                    <?php } else { ?>
+                                        <span class="badge bg-light text-muted border px-3 py-2"><i class="bi bi-check2-all"></i> Ulasan Terkirim</span>
+                                    <?php } ?>
+                                </div>
+                            <?php } ?>
                         </div>
                     </div>
             <?php 
                 }
             } else {
                 echo "<div class='col-12'>
-                        <div class='alert border-0 shadow-sm text-center p-5' style='background-color: #fff; border-radius: 20px;'>
-                            <h5 class='fw-bold text-muted mb-0'>Belum ada riwayat transaksi.</h5>
+                        <div class='alert border-0 shadow-sm text-center p-5 bg-white' style='border-radius: 12px;'>
+                            <h5 class='fw-bold text-muted mb-0'><i class='bi bi-info-circle'></i> Belum ada riwayat transaksi.</h5>
                         </div>
                     </div>";
             } 

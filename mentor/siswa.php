@@ -6,7 +6,6 @@ include '../config/koneksi.php';
 $id_user = $_SESSION['id'];
 $id_mentor = mysqli_fetch_assoc(mysqli_query($conn, "SELECT id_mentor FROM mentor WHERE id_user='$id_user'"))['id_mentor'];
 
-// Mengambil daftar unik siswa yang sudah pernah selesai bimbingan
 $query_siswa = mysqli_query($conn, "SELECT DISTINCT u.nama, u.email, u.no_wa 
                                     FROM booking b 
                                     JOIN users u ON b.id_mahasiswa = u.id 

@@ -20,10 +20,10 @@ include '../templates/header.php';
                 <tbody>
                     <?php while($row = mysqli_fetch_assoc($query)) { ?>
                     <tr>
-                        <td><?= $row['nama_mahasiswa'] ?></td>
-                        <td><?= $row['nama_mentor'] ?></td>
-                        <td><?= $row['tanggal'] ?></td>
-                        <td><span class="badge bg-info"><?= $row['status'] ?></span></td>
+                        <td><?= htmlspecialchars($row['nama_mahasiswa'], ENT_QUOTES, 'UTF-8') ?></td>
+                        <td><?= htmlspecialchars($row['nama_mentor'], ENT_QUOTES, 'UTF-8') ?></td>
+                        <td><?= htmlspecialchars($row['tanggal'], ENT_QUOTES, 'UTF-8') ?></td>
+                        <td><span class="badge bg-info"><?= htmlspecialchars($row['status'], ENT_QUOTES, 'UTF-8') ?></span></td>
                     </tr>
                     <?php } ?>
                 </tbody>
