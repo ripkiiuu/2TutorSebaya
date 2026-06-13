@@ -8,6 +8,7 @@ if (!isset($_GET['id'])) {
     exit;
 }
 
+
 $id = (int) $_GET['id'];
 
 $query = mysqli_query($conn, "SELECT * FROM users WHERE id = $id");
