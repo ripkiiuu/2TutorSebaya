@@ -16,14 +16,36 @@ include '../templates/header.php';
 
         <h5 class="fw-bold mt-4">Daftar Mahasiswa</h5>
         <table class="table bg-white shadow-sm mb-5">
-            <thead><tr><th>Nama</th><th>Email</th></tr></thead>
+            <thead>
+            <tr>
+                <th style="width: 40%;">Nama</th>
+                <th style="width: 40%;">Email</th>
+                <th style="width: 20%;">Aksi</th>
+            </tr>
+            </thead>
             <tbody>
                 <?php
                 $mhs = mysqli_query($conn, "SELECT * FROM users WHERE role='mahasiswa'");
                 while($row = mysqli_fetch_assoc($mhs)) {
+                    $id = $row['id'];
                     $nama = htmlspecialchars($row['nama'], ENT_QUOTES, 'UTF-8');
                     $email = htmlspecialchars($row['email'], ENT_QUOTES, 'UTF-8');
-                    echo "<tr><td>{$nama}</td><td>{$email}</td></tr>";
+                    echo "
+                    <tr>
+                        <td>{$nama}</td>
+                        <td>{$email}</td>
+                        <td>
+                            <a href='detailUser.php?id=$id' class='btn btn-info btn-sm'>
+                                Detail
+                            </a>
+
+                            <a href='hapusUser.php?id=$id'
+                            class='btn btn-danger btn-sm'
+                            onclick=\"return confirm('Yakin ingin menghapus akun ini?')\">
+                            Hapus
+                            </a>
+                        </td>
+                    </tr>";
                 }
                 ?>
             </tbody>
@@ -31,14 +53,38 @@ include '../templates/header.php';
 
         <h5 class="fw-bold mt-4">Daftar Mentor</h5>
         <table class="table bg-white shadow-sm">
-            <thead><tr><th>Nama</th><th>Email</th></tr></thead>
+        <thead>
+        <tr>
+            <th style="width: 40%;">Nama</th>
+            <th style="width: 40%;">Email</th>
+            <th style="width: 20%;">Aksi</th>
+        </tr>
+        </thead>
             <tbody>
                 <?php
                 $mnt = mysqli_query($conn, "SELECT * FROM users WHERE role='mentor'");
                 while($row = mysqli_fetch_assoc($mnt)) {
+                    $id = $row['id'];
                     $nama = htmlspecialchars($row['nama'], ENT_QUOTES, 'UTF-8');
                     $email = htmlspecialchars($row['email'], ENT_QUOTES, 'UTF-8');
-                    echo "<tr><td>{$nama}</td><td>{$email}</td></tr>";
+
+                    echo "
+                    <tr>
+                        <td>{$nama}</td>
+                        <td>{$email}</td>
+                        <td>
+                            <a href='detailUser.php?id=$id'
+                            class='btn btn-info btn-sm'>
+                            Detail
+                            </a>
+
+                            <a href='hapusUser.php?id=$id'
+                            class='btn btn-danger btn-sm'
+                            onclick=\"return confirm('Yakin ingin menghapus akun ini?')\">
+                            Hapus
+                            </a>
+                        </td>
+                    </tr>";
                 }
                 ?>
             </tbody>

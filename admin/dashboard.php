@@ -42,7 +42,14 @@ $query_ulasan = mysqli_query($conn, "SELECT u.*, m.nama as nama_mentor, mhs.nama
                                     ORDER BY u.id_ulasan DESC LIMIT 5");
 
 $total_pengguna = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM users WHERE role != 'admin'"))['total'];
-$mentor_aktif = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM mentor WHERE status_verifikasi = 'approved'"))['total'];
+$mentor_aktif = mysqli_fetch_assoc(
+    mysqli_query($conn, "
+        SELECT COUNT(*) as total
+        FROM mentor m
+        INNER JOIN users u ON m.id_user = u.id
+        WHERE m.status_verifikasi = 'approved'
+    ")
+)['total'];
 $trx_result = mysqli_fetch_assoc(mysqli_query($conn, "SELECT SUM(total_harga) as summary FROM booking WHERE status='selesai'"));
 $total_transaksi = $trx_result['summary'] ? $trx_result['summary'] : 0;
 $sesi_bulan_ini = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM booking WHERE MONTH(tanggal) = MONTH(CURRENT_DATE()) AND YEAR(tanggal) = YEAR(CURRENT_DATE())"))['total'];
