@@ -61,26 +61,6 @@ Website ini dikembangkan sebagai tugas besar mata kuliah **Pemrograman Web** men
 - Figma
 
 ---
-
-## 📂 Struktur Project
-
-```text
-TutorSebaya/
-├── admin/
-├── assets/
-├── config/
-├── mahasiswa/
-├── mentor/
-├── templates/
-├── index.php
-├── login.php
-├── register.php
-├── logout.php
-└── tutorsebaya.sql
-```
-
----
-
 ## 🚀 Cara Menjalankan
 
 1. Clone repository
