@@ -66,7 +66,7 @@ Website ini dikembangkan sebagai tugas besar mata kuliah **Pemrograman Web** men
 1. Clone repository
 
 ```bash
-git clone https://github.com/username/TutorSebaya.git
+git clone https://github.com/ripkiiuu/2TutorSebaya.git
 ```
 
 2. Pindahkan project ke folder **htdocs**.
@@ -82,7 +82,7 @@ tutorsebaya.sql
 5. Buka browser
 
 ```
-http://localhost/TutorSebaya
+http://localhost/2TutorSebaya
 ```
 
 ---
